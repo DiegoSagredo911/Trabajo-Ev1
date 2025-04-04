@@ -6,9 +6,12 @@ const authenticate = (req, res, next) => {
   }
 
   const user = users.find((u) => u.token === token);
+
   if (!user) {
     return res.status(401).json({ error: "Token invalido" });
   }
+
+  req.header.user = user;
 
   next();
 };

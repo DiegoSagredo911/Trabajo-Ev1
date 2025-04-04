@@ -1,31 +1,73 @@
+const { randomUUID } = require("node:crypto");
+const reminders = require("../db/remindersDB")
+
 const getAll = (req, res) => {
-  res.send("Todos los recordatorios");
+  const {username} = req.header.user
+
+  const remindersUser = reminders.filter(
+    (u) => u.username === username
+  );
+  return res.json(remindersUser);
 };
 const getById = (req, res) => {
+  const {username} = req.header.user
   const { id } = req.params;
-  res.send(`id: ${id}`);
+  const remindersUser = reminders.find(
+    (u) => u.username.toLowerCase() === username.toLowerCase() && u.id===id
+  );
+  return res.json(remindersUser);
 };
 
 const create = (req, res) => {
-  const { title, description } = req.body;
-  if (!title || !description) {
-    return res.status(400).send("title and description es requerido");
+  const { content,important } = req.body;
+  const {username} = req.header.user
+
+  const ahora = new Date();
+  
+  if (!content || !important) {
+    
+    return res.status(400).send("content and important es requerido");
+  }  
+
+  const reminder =  {
+    username:username,
+    id:randomUUID(),
+    content: content,
+    createdAt: ahora,
+    important: important
   }
-  res.status(201).send(` ${title} - ${description}`);
+  reminders.push(reminder);
+
+  res.status(201).send(reminder);
 };
 
 const update = (req, res) => {
   const { id } = req.params;
-  const { title, description } = req.body;
-  if (!title || !description) {
-    return res.status(400).send("title and description es requerido");
+  const { content, important } = req.body;
+  const {username} = req.header.user
+
+  if (!content || !important) {
+    return res.status(400).send("content and important es requerido");
   }
-  res.send(`reminder id: ${id} atributo ${title} - ${description}`);
+
+  const remindersUser = reminders.find(
+    (u) => u.username === username && u.id===id
+  );
+  remindersUser.content=content;
+  remindersUser.important=important;
+
+  return res.json(remindersUser)
 };
+
+
 
 const remove = (req, res) => {
   const { id } = req.params;
-  res.send(`Reminder id: ${id} eliminado`);
+  const {username} = req.header.user
+
+  const reminder = reminders.find((r) => r.id === id && r.username === username);
+  
+  res.status(204).send();
 };
 
 module.exports = remindersController = {

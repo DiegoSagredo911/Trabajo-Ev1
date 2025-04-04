@@ -37,6 +37,8 @@ const login = async (req, res) => {
       return res.json(user);
     });
   } catch (error) {
+    console.log(error);
+    
     return res.status(500).json({ error: "Error interno" });
   }
 };
