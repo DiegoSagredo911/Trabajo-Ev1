@@ -9,7 +9,8 @@ let users = [
     username: "Pedrito",
     name: "Pedrito",
     salt: "465f90a2da518142c1667fc81b8e5d7e:a106e61fc721480d3647089a2eb769527abcf980775fadaeb1795d9dffdd62998345076ce21a44635bd6da6fd60ab43d680140cbf2c59c3bbf46759cf539f376",
-    token: null,
+    token:
+      "90a381ca5f08807ecf733ff6da372cefc499f389afb233a543c9ce04f051bbf75fd94d61bf3bedbee736c2311c7cb02b",
   },
 ];
 
