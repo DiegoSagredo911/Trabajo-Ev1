@@ -6,10 +6,15 @@ const remindersCorrectFormat = (req, res, next) => {
       if (!content) {
         return res.status(400).json({ error: "Content es requerido" });
       }
-      if (typeof important !== "boolean") {
-        return res
-          .status(400)
-          .json({ error: "importan tiene que ser de tipo boolean" });
+      if (!important) {
+        req.body.important = false;
+      }
+      if (important !== undefined) {
+        if (typeof important !== "boolean") {
+          return res
+            .status(400)
+            .json({ error: "importan tiene que ser de tipo boolean" });
+        }
       }
     }
     let message = "";

@@ -13,7 +13,7 @@ const login = async (req, res) => {
       return res.status(401).json({ error: "Usuario no existe" });
     }
 
-    const [storedSalt, storedKey] = user.salt.split(":");
+    const [storedSalt, storedKey] = user.password.split(":");
 
     crypto.scrypt(password, storedSalt, 64, (err, derivedKey) => {
       if (err) return res.status(500).json({ error: "Error interno" });

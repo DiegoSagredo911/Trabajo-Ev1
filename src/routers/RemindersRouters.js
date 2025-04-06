@@ -11,7 +11,7 @@ reminders.post(
   remindersController.create
 );
 
-reminders.put(
+reminders.patch(
   "/:id",
   remindersMiddleware.idCorrentFormat,
   remindersMiddleware.remindersCorrectFormat,
