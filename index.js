@@ -10,7 +10,7 @@ app.use(express.json());
 
 app.use("/api/reminders", UserMiddleware.authenticate, RemindersRouters);
 
-app.use("/api/auth", UserMiddleware.correctFormat, PublicRouters);
+app.use("/api/auth", PublicRouters);
 
 app.use("/*", (req, res) => {
   res.status(404).json({ error: "Ruta no encontrada" });

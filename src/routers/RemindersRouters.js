@@ -1,26 +1,22 @@
 const express = require("express");
 const reminders = express.Router();
 const remindersController = require("../controllers/RemindersControllers");
-const remindersMiddleware = require("../Middleware/remindersMiddleware");
+const middleware = require("../Middleware/MiddlewareValibot");
+const schemas = require("../Middleware/schemas/reminders");
 
 reminders.get("/", remindersController.getAll);
 
-reminders.post(
-  "/",
-  remindersMiddleware.remindersCorrectFormat,
-  remindersController.create
-);
+reminders.post("/", middleware(schemas.create), remindersController.create);
 
 reminders.patch(
-  "/:id",
-  remindersMiddleware.idCorrentFormat,
-  remindersMiddleware.remindersCorrectFormat,
+  "/:uuid",
+  middleware(schemas.update),
   remindersController.update
 );
 
 reminders.delete(
-  "/:id",
-  remindersMiddleware.idCorrentFormat,
+  "/:uuid",
+  middleware(schemas.update),
   remindersController.remove
 );
 

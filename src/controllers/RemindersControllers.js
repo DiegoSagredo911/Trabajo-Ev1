@@ -42,10 +42,10 @@ const create = (req, res) => {
 
 const update = (req, res) => {
   try {
-    const { id } = req.params;
+    const { uuid } = req.params;
     const { content, important } = req.body;
 
-    const remindersUser = reminders.find((u) => u.id === id);
+    const remindersUser = reminders.find((u) => u.id === uuid);
 
     if (!remindersUser) {
       return res.status(404).json({
@@ -73,9 +73,9 @@ const update = (req, res) => {
 
 const remove = (req, res) => {
   try {
-    const { id } = req.params;
+    const { uuid } = req.params;
 
-    const existe = reminders.find((u) => u.id === id);
+    const existe = reminders.find((u) => u.id === uuid);
 
     if (!existe) {
       return res.status(404).json({
@@ -83,7 +83,7 @@ const remove = (req, res) => {
       });
     }
 
-    reminders = reminders.filter((u) => !(u.id === id));
+    reminders = reminders.filter((u) => !(u.id === uuid));
 
     return res.status(204).json({ message: "Recordatorio eliminado" });
   } catch (error) {
