@@ -20,4 +20,4 @@ reminders.delete(
   remindersController.remove
 );
 
-module.exports = RemindersRouter = reminders;
+module.exports = reminders;

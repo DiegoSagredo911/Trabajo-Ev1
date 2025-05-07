@@ -17,12 +17,13 @@ const getAll = (req, res) => {
 const create = (req, res) => {
   try {
     const { content, important } = req.body;
+    console.log(content + " <-->" + important);
 
     const reminder = {
       id: randomUUID(),
       content: content,
       createdAt: Date.now(),
-      important: important,
+      important: important ? important : false,
     };
     reminders.push(reminder);
     let output = {
@@ -34,6 +35,7 @@ const create = (req, res) => {
 
     return res.status(201).send(output);
   } catch (error) {
+    console.log("error aqui");
     console.log(error);
 
     return res.status(500).json({ error: "Error interno" });

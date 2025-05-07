@@ -1,4 +1,4 @@
-import * as v from "valibot";
+const v = require("valibot");
 
 const login = v.object({
   username: v.string([v.minLength(1, "Email no puede estar vacío.")]),

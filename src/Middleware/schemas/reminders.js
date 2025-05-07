@@ -1,33 +1,25 @@
-import * as v from "valibot";
+const v = require("valibot");
 
 const create = v.object({
-  uuid: v.optional(v.string()),
-  content: v.transform(
+  content: v.optional(
     v.string([
       v.minLength(1, "Content no puede estar vacío."),
       v.maxLength(120, "Content no puede ser mayor a 120 caracteres."),
-    ]),
-    (val) => val.trim()
-  ),
-  important: v.optional(v.nullable(v.boolean())),
-});
-
-const update = v.object({
-  uuid: v.string(),
-  content: v.optional(
-    v.transform(
-      v.string([
-        v.minLength(1, "Content no puede estar vacío."),
-        v.maxLength(120, "Content no puede ser mayor a 120 caracteres."),
-      ]),
-      (val) => val.trim()
-    )
+    ])
   ),
   important: v.optional(v.boolean()),
 });
 
-const remove = v.object({
-  uuid: v.string(),
+const update = v.object({
+  content: v.optional(
+    v.string([
+      v.minLength(1, "Content no puede estar vacío."),
+      v.maxLength(120, "Content no puede ser mayor a 120 caracteres."),
+    ])
+  ),
+  important: v.optional(v.boolean()),
 });
 
-export { create, update, remove };
+const remove = v.object({});
+
+module.exports = { create, update, remove };
