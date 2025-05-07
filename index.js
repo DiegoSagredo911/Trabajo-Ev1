@@ -19,3 +19,5 @@ app.use("/*", (req, res) => {
 app.listen(port, () => {
   console.log(`escuchando en puerto ${port}`);
 });
+
+module.exports = app;
