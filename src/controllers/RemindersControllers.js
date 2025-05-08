@@ -17,7 +17,6 @@ const getAll = (req, res) => {
 const create = (req, res) => {
   try {
     const { content, important } = req.body;
-    console.log(content + " <-->" + important);
 
     const reminder = {
       id: randomUUID(),
