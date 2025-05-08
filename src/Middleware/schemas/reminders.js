@@ -11,6 +11,7 @@ const create = v.object({
 });
 
 const update = v.object({
+  uuid: v.string([v.uuid("uuid no es valido")]),
   content: v.optional(
     v.string([
       v.minLength(1, "Content no puede estar vacío."),
@@ -20,6 +21,9 @@ const update = v.object({
   important: v.optional(v.boolean()),
 });
 
-const remove = v.object({});
+//validar params uuid u que sea un uuid
+const remove = v.object({
+  uuid: v.string([v.uuid("uuid no es valido")]),
+});
 
 module.exports = { create, update, remove };

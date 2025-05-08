@@ -16,7 +16,7 @@ reminders.patch(
 
 reminders.delete(
   "/:uuid",
-  middleware(schemas.update),
+  middleware(schemas.remove),
   remindersController.remove
 );
 
