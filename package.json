@@ -5,13 +5,15 @@
   "scripts": {
     "start": "node index.js",
     "dev": "node index.js --watch",
-    "test": "npx vitest --watch --ui"
+    "test": "npx vitest --watch --ui",
+    "migrate": "npx prisma migrate dev --name init"
   },
   "keywords": [],
   "author": "Diego Sagredo",
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "@prisma/client": "^6.7.0",
     "cors": "^2.8.5",
     "express": "^4.21.2",
     "valibot": "^1.1.0"
