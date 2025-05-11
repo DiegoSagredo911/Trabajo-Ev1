@@ -1,10 +1,7 @@
-/*{
-    "name":"Pedrito",
-    "username":"Pedrito",
-    "password":"pedrito123"}
-*/
+const { randomUUID } = require("node:crypto");
+const { db } = require("../../prisma/client");
 
-let users = [
+let usersData = [
   {
     username: "Pedrito",
     name: "Pedrito",
@@ -18,7 +15,24 @@ let users = [
     name: "Gustavo Alfredo Marín Sáez",
     password:
       "1b6ce880ac388eb7fcb6bcaf95e20083:341dfbbe86013c940c8e898b437aa82fe575876f2946a2ad744a0c51501c7dfe6d7e5a31c58d2adc7a7dc4b87927594275ca235276accc9f628697a4c00b4e01", // certamen123
+    token: "",
   },
 ];
 
-module.exports = users;
+const users = async () => {
+  await db.user.createMany({
+    data: usersData.map((user) => {
+      return {
+        id: randomUUID(),
+        username: user.username,
+        name: user.name,
+        password: user.password,
+        token: user.token,
+      };
+    }),
+  });
+};
+
+module.exports = {
+  users,
+};

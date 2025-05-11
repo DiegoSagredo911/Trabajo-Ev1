@@ -2,8 +2,8 @@ const { safeParse } = require("valibot");
 
 const validateBody = (schema) => {
   return (req, res, next) => {
-    let result
- 
+    let result;
+
     result = safeParse(schema, req.body);
 
     if (!result.success) {
@@ -18,10 +18,10 @@ const validateBody = (schema) => {
 
 const validateParams = (schema) => {
   return (req, res, next) => {
-    let result
- 
+    let result;
+
     result = safeParse(schema, req.params);
-     
+
     if (!result.success) {
       const messages = result.issues.map((issue) => issue.message).join(" ");
       return res.status(400).json({ error: messages });
@@ -31,4 +31,4 @@ const validateParams = (schema) => {
     next();
   };
 };
-module.exports = {validateBody, validateParams};
+module.exports = { validateBody, validateParams };

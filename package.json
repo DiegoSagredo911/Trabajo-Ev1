@@ -6,7 +6,8 @@
     "start": "node index.js",
     "dev": "node index.js --watch",
     "test": "npx vitest --watch --ui",
-    "migrate": "npx prisma migrate dev --name init"
+    "migrate": "npx prisma migrate dev --name init",
+    "seed": "node prisma/seed/index.js"
   },
   "keywords": [],
   "author": "Diego Sagredo",

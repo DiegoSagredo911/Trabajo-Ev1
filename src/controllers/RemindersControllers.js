@@ -1,90 +1,116 @@
 const { randomUUID } = require("node:crypto");
-let reminders = require("../db/remindersDB");
+const { db } = require("../../prisma/client");
 
-const getAll = (req, res) => {
+const getAll = async (req, res) => {
   try {
-    const sorted = [...reminders].sort((a, b) =>
-      a.important !== b.important
-        ? b.important - a.important
-        : a.createdAt - b.createdAt
-    );
-    return res.status(200).json(sorted);
+    const result = await db.reminder.findMany({
+      orderBy: [
+        {
+          important: "desc",
+        },
+        {
+          createdAt: "asc",
+        },
+      ],
+    });
+    const serialized = result.map((reminder) => ({
+      ...reminder,
+      createdAt: Number(reminder.createdAt), // o .toString()
+    }));
+
+    return res.status(200).json(serialized);
   } catch (error) {
-    return res.status(500).json({ error: "Error interno" });
-  }
-};
-
-const create = (req, res) => {
-  try {
-    const { content, important } = req.body;
-
-    const reminder = {
-      id: randomUUID(),
-      content: content,
-      createdAt: Date.now(),
-      important: important ? important : false,
-    };
-    reminders.push(reminder);
-    let output = {
-      id: reminder.id,
-      content: reminder.content,
-      createdAt: reminder.createdAt,
-      important: reminder.important,
-    };
-
-    return res.status(201).send(output);
-  } catch (error) {
-    console.log("error aqui");
     console.log(error);
 
     return res.status(500).json({ error: "Error interno" });
   }
 };
 
-const update = (req, res) => {
+const create = async (req, res) => {
   try {
-    const { uuid } = req.params;
     const { content, important } = req.body;
 
-    const remindersUser = reminders.find((u) => u.id === uuid);
-
-    if (!remindersUser) {
-      return res.status(404).json({
-        error: "No existe el recordatorio con ese id",
-      });
-    }
-    if (content != undefined) {
-      remindersUser.content = content;
-    }
-    if (important != undefined) {
-      remindersUser.important = important;
-    }
-    let output = {
-      id: remindersUser.id,
-      content: remindersUser.content,
-      createdAt: remindersUser.createdAt,
-      important: remindersUser.important,
+    const data = {
+      id: randomUUID(),
+      content: content,
+      createdAt: Date.now(),
+      important: important ? important : false,
     };
 
-    return res.status(200).json(output);
+    let result = await db.reminder.create({
+      data,
+    });
+    result.createdAt = Number(result.createdAt);
+
+    return res.status(201).json(result);
   } catch (error) {
+    console.log(error);
+
     return res.status(500).json({ error: "Error interno" });
   }
 };
 
-const remove = (req, res) => {
+const update = async (req, res) => {
+  try {
+    const { uuid } = req.params;
+    const { content, important } = req.body;
+    console.log(req.body);
+
+    let result = await db.reminder.findUnique({
+      where: {
+        id: uuid,
+      },
+    });
+
+    if (!result) {
+      return res.status(404).json({
+        error: "No existe el recordatorio con ese id",
+      });
+    }
+    if (content) {
+      result.content = content;
+    }
+    if (typeof important !== "undefined") {
+      result.important = important;
+    }
+
+    const resultUpdate = await db.reminder.update({
+      where: {
+        id: uuid,
+      },
+      data: result,
+    });
+    resultUpdate.createdAt = Number(resultUpdate.createdAt);
+
+    return res.status(200).json(resultUpdate);
+  } catch (error) {
+    console.log(error);
+
+    return res.status(500).json({ error: "Error interno" });
+  }
+};
+
+const remove = async (req, res) => {
   try {
     const { uuid } = req.params;
 
-    const existe = reminders.find((u) => u.id === uuid);
+    let result = await db.reminder.findUnique({
+      where: {
+        id: uuid,
+      },
+    });
 
-    if (!existe) {
+    if (!result) {
       return res.status(404).json({
         error: "No existe el recordatorio con ese id",
       });
     }
 
-    reminders = reminders.filter((u) => !(u.id === uuid));
+    await db.reminder.delete({
+      where: {
+        id: uuid,
+      },
+    });
 
     return res.status(204).json({ message: "Recordatorio eliminado" });
   } catch (error) {

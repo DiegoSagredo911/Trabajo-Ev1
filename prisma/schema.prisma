@@ -8,8 +8,20 @@ generator client {
 
 datasource db {
   provider = "sqlite"
-  url      = env("DATABASE_URL")
+  url      = "file:mi_base_de_datos.db"
 }
 
+model User {
+  id       String    @id @default(uuid())
+  username String    @unique
+  name     String
+  password String
+  token    String  @default("")
+}
 
-// me falta crear el usuario y recordatorios
+model Reminder {
+  id        String  @id @default(uuid())
+  content   String
+  createdAt BigInt   
+  important Boolean @default(false)
+}
