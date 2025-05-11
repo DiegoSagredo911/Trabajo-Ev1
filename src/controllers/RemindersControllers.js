@@ -15,7 +15,7 @@ const getAll = async (req, res) => {
     });
     const serialized = result.map((reminder) => ({
       ...reminder,
-      createdAt: Number(reminder.createdAt), // o .toString()
+      createdAt: Number(reminder.createdAt),
     }));
 
     return res.status(200).json(serialized);
@@ -54,7 +54,6 @@ const update = async (req, res) => {
   try {
     const { uuid } = req.params;
     const { content, important } = req.body;
-    console.log(req.body);
 
     let result = await db.reminder.findUnique({
       where: {

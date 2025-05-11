@@ -27,7 +27,7 @@ const validateParams = (schema) => {
       return res.status(400).json({ error: messages });
     }
 
-    req.body = result.output;
+    req.params = result.output;
     next();
   };
 };
