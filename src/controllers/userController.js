@@ -24,7 +24,7 @@ const Logout = async (req, res) => {
       },
     });
 
-    return res.status(200).json({ message: "Logout exitoso" });
+    return res.status(204).send();
   } catch (error) {
     console.log(error);
     return res.status(500).json({ error: "Error interno" });

@@ -131,3 +131,5 @@ dist
 
 
 /src/generated/prisma/
+/prisma/migrations/
+/prisma/mi_base_de_datos.db
